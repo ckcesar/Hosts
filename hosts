@@ -1,0 +1,56 @@
+# Alterar arquivo de hosts
+editar o arquivo /etc/hosts
+sudo [editor] /etc/hosts
+
+127.0.0.1 novosite.site
+
+#Criar arquivo de configuração do apache.
+
+-virar usuário root
+sudo su
+
+#Acessar a pasta com os arquivos de configuração
+cd /etc/apache2/sites-available/
+
+#copie um arquivo como referência
+
+cp site.club.conf novosite.com.br.conf
+
+# edita o arquivo novosite.com.br.conf e altera
+--<VirtualHost *:80>
+        ServerName pixcube.site
+        ServerAlias pixcube.site
+	      ServerAdmin rodrigoslompo@gmail.com
+        DocumentRoot /home/n1e/www/sites/pixcube/advanced/frontend/web
+        
+        <Directory "/home/n1e/www/sites/pixcube/advanced/frontend/web">
+          Options All
+          AllowOverride All
+          Require all granted
+
+          Order allow,deny
+          allow from all
+
+        </Directory>
+       
+
+        ErrorLog ${APACHE_LOG_DIR}/error.log
+        CustomLog ${APACHE_LOG_DIR}/access.log combined
+</VirtualHost>
+# vim: syntax=apache ts=4 sw=4 sts=4 sr noet
+#
+----
+
+sudo [editor] novosite.com.br.conf
+
+#Abilitar o site
+a2ensite novosite.com.br.conf
+
+#Dar um reload no apache
+
+service apache2 reload
+service apache2 restart
+
+#Resolvendo problemas
+
+tail -f /var/log/apache2/error.log
